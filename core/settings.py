@@ -45,6 +45,8 @@ LOCAL_APPS = [
     
     ]
 THIRD_PARTY_APPS = [
+
+    'jazzmin',
    
     ]
 
@@ -65,7 +67,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -142,3 +144,27 @@ SESSION_COOKIE_AGE = 1000
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+JAZZMIN_SETTINGS = {
+    'user_avatar': None,
+    'site_title': "SIGECOR",
+    'site_header': "SIGECOR",
+    'site_brand': "SIGECOR",
+    'site_header': "SIGECOR",
+    'copyright': "Frank Dev",
+    'welcome_sign': "BIENVENIDO AL SIGECOR",
+    'icons': {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user-tie",
+        "auth.Group": "fas fa-viruses",
+        'Gestor.Empleado':  "fas fa-hands-helping",
+        'Gestor.Empresa':  "far fa-building",
+        'Gestor.Estante':  "fas fa-heart",
+        'Gestor.Oficina':  "fas fa-layer-group",
+    },
+    "login_logo_dark": None,
+    "site_icon": None,
+
+}
