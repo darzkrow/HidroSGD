@@ -13,7 +13,7 @@
 
 ### Instalación
 
-1. Clona este repositorio: `git clone https://github.com/' %username% '/sigecor.git`
+1. Clona este repositorio: `https://github.com/darzkrow/HidroSGD.git`
 2. Ve al directorio del proyecto: `cd sigecor`
 3. Crea y activa un entorno virtual (opcional): `python3 -m venv env` y `source env/bin/activate`
 4. Instala las dependencias: `pip install -r requirements.txt`
@@ -22,7 +22,7 @@
 7. Inicia el servidor local: `python manage.py runserver`
 8. Accede al sistema a través de tu navegador web: `http://localhost:8000`
 
-## Uso
+### Uso
 
 
 
