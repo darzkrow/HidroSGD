@@ -1,0 +1,4 @@
+#timeline-scroll {
+    max-height: 700px; /* Establece la altura máxima para mostrar el scroll vertical */
+    overflow-y: auto; /* Habilita el scroll vertical si el contenido excede la altura máxima */
+}
