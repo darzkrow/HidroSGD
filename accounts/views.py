@@ -6,6 +6,32 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Pass
 from django.contrib.auth.views import LoginView, LogoutView
 from django.db import IntegrityError
 from django.urls import reverse_lazy
+from django.contrib.auth import login, logout
+from django.views.generic import ListView
+from django.views.generic import TemplateView
+from .models import ConfiguracionPagina
+# Create your views here.
+
+
+class InicioView(TemplateView):
+    template_name = 'dashboard/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        configuracion = ConfiguracionPagina.objects.first()
+
+        context['title_page'] = configuracion.titulo if configuracion else 'SIGECOR'
+        return context
+
+
+
+
+
+
+
+class Dashboard(ListView):
+    def get(self, request, *args, **kwargs):
+            return render(request, 'dashboard/home.html')
 
 
 class SignupView(View):
@@ -24,20 +50,13 @@ class SignupView(View):
                 user = form.save()
                 login(request, user)
                 messages.success(request, '¡Registro exitoso!')
-                return redirect('home')
+                return redirect('accounts:home')
             except IntegrityError:
                 messages.error(request, 'Nombre de usuario ya tomado.')
         else:
             messages.error(request, 'Ha ocurrido un error en el formulario. Por favor, inténtalo de nuevo.')
 
         return render(request, 'auth/signup.html', {"form": UserCreationForm})
-
-
-# llama a la plantilla home del tablero de Usuarios
-def Dashboard(request):
-    return render(request, 'dashboard/home.html')
-
-
 
 class SigninView(LoginView):
     def get(self, request):
@@ -53,3 +72,6 @@ class SigninView(LoginView):
             login(request, user)
             return redirect('accounts:home')
         return render(request, 'auth/signin.html', {"form": form, "error": "Nombre de usuario o contraseña incorrecta."})
+
+class SignoutView(LogoutView):
+    next_page = ('accounts:index')

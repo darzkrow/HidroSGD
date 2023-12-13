@@ -1,13 +1,14 @@
 from django.urls import path
 
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
-from .views import Dashboard, SignupView, SigninView
+from .views import InicioView,  Dashboard, SignupView, SigninView, SignoutView
 
 app_name = 'accounts'  
 urlpatterns = [
-    path('', Dashboard, name='home'),
-    path('signin/', SigninView.as_view(), name='login_Accounts'),
-    path('signup/', SignupView.as_view(), name='signup'),
-
+    path('',          InicioView.as_view(), name = 'index'),
+    path('dashboard/', Dashboard.as_view(), name='home'),
+    path('signin/',    SigninView.as_view(), name='signin'),
+    path('signup/',    SignupView.as_view(), name='signup'),
+    path('signout/',   SignoutView.as_view(), name='signout'),
 
     ]

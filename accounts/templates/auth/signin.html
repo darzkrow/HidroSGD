@@ -8,7 +8,7 @@
 <div class="card-body">
   <p class="login-box-msg">Inicia sesión</p>
 
-  <form action="{% url 'accounts:login_Accounts'%}" method="POST">
+  <form action="{% url 'accounts:signin'%}" method="POST">
     {% csrf_token %}
 
     <div class="input-group mb-3">
