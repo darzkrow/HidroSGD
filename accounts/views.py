@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+
 from django.views import View
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
@@ -73,5 +74,11 @@ class SigninView(LoginView):
             return redirect('accounts:home')
         return render(request, 'auth/signin.html', {"form": form, "error": "Nombre de usuario o contraseña incorrecta."})
 
-class SignoutView(LogoutView):
-    next_page = ('accounts:index')
+
+class SignoutView(View):
+    def get(self, request, *args, **kwargs):
+        # Realizar cierre de sesión
+        logout(request)
+        
+        # Redirigir a la página deseada después del cierre de sesión
+        return redirect( reverse_lazy('accounts:index'))
