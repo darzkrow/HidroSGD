@@ -52,7 +52,7 @@ class Correspondence(models.Model):
 class Enviado(Correspondence):
     title = models.CharField('Titulo',max_length=100)
     coddoc = models.CharField('Codigo', max_length=50, null=False, blank=False)
-    docENV = models.FileField(null=True, blank=True, upload_to='empresa/doc')
+    docENV = models.FileField(null=True, blank=True, upload_to='doc/enviada')
 
 
     class Meta:
@@ -61,5 +61,17 @@ class Enviado(Correspondence):
         db_table = 'sgd_env'
 
     
+
+class Recibido(Correspondence):
+    title = models.CharField('Titulo',max_length=100)
+    coddoc = models.CharField('Codigo', max_length=50, null=False, blank=False)
+    docREC = models.FileField(null=True, blank=True, upload_to='doc/recibido')
+
+
+    class Meta:
+        verbose_name = 'Correspondencia Recibida'
+        verbose_name_plural = 'Correspondencias Recibids'
+        db_table = 'sgd_rec'
+
 
 
