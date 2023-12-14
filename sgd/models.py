@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 
 class Correspondence(models.Model):
@@ -24,7 +26,7 @@ class Correspondence(models.Model):
         
         ]
     type_doc = models.CharField('Tipo de Documento',max_length=20,
-                    choices=STATUS_CHOICES, 
+                    choices=TYPE_CHOICES, 
                     default='MEMORANDO')
 
 
@@ -51,15 +53,32 @@ class Correspondence(models.Model):
 
 class Enviado(Correspondence):
     title = models.CharField('Titulo',max_length=100)
-    coddoc = models.CharField('Codigo', max_length=50, null=False, blank=False)
+    coddoc = models.CharField('Codigo', max_length=50, null=True, blank=True)
     docENV = models.FileField(null=True, blank=True, upload_to='doc/enviada')
 
 
     class Meta:
         verbose_name = 'Correspondencia Enviada'
         verbose_name_plural = 'Correspondencias Enviadas'
-        db_table = 'sgd_env'
+        db_table = 'sgd_env'# Función para generar el valor del campo 'coddoc' antes de guardar el objeto Enviado
 
+    def __str__(self):
+        return self.coddoc
+    
+@receiver(pre_save, sender=Enviado)
+def generate_coddoc(sender, instance, **kwargs):
+    if instance.coddoc is None or instance.coddoc == '':
+        last_enviado = Enviado.objects.filter(coddoc__startswith='DOC-').order_by('-id').first()
+
+        if last_enviado:
+            last_coddoc = int(last_enviado.coddoc[4:])  # Extraer el número después de 'DOC'
+            new_coddoc = f'DOC-{last_coddoc + 1:4}'  # Incrementar el número y formatear con ceros a la izquierda
+        else:
+            new_coddoc = 'DOC-0001'  # Si no hay correspondencias anteriores, iniciar desde 'DOC0001'
+
+        instance.coddoc = new_coddoc
+
+ 
     
 
 class Recibido(Correspondence):
@@ -75,3 +94,12 @@ class Recibido(Correspondence):
 
 
 
+
+class SeguimientosEnv(models.Model):    
+    SegEnv = models.ForeignKey(Enviado, on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment by {self.author.username}"
